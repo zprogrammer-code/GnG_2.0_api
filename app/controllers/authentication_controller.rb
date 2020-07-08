@@ -4,17 +4,19 @@ class AuthenticationController < ApplicationController
         if !@user
             render json: { error: "No account with that username"},
             status: unauthorized
+            byebug
         else
+            
             if!@user.authenticate params[:password]
                 render json: { message: "Incorrect username or password" },
-            else 
-                payload = { user.id: @user.id}
-                seceret = Rails.authenticate.seceret_key_base
+        else 
+                payload = { User.id: @user.id}
+                Seceret = Rails.authenticate.seceret_key_base
 
                 token = JWT.encode payload, seceret
 
-                render json: { token: token 
-            end}
+                render json: { token: token }, status: :created
+            end
     end
 end
 
