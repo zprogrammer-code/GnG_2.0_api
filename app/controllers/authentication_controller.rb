@@ -1,28 +1,28 @@
 class AuthenticationController < ApplicationController
     def login
-        @user.find_by username: params[:username]
-        if !@user
-            render json: { error: "No account with that username"},
-            status: unauthorized
-            byebug
+        @user = User.find_by username: params[:username]
+       
+        if @user
+            if @user.authenticate params[:password]
+
+            secret = Rails.application.secrets.secret_key_base
+            payload = { user_id: @user.id }
+            token = JWT.encode(payload, secret)
+            decoded_token = JWT.decode(token, secret)
+
+            render json: { 
+                username: @user.username,
+                    password: @user.password,
+                     token: token }, status: :created 
+
+             
+            else
+                render json: { error: "No account with that username"}, status: :unauthorized
+            end
         else
-            
-            if!@user.authenticate params[:password]
-                render json: { message: "Incorrect username or password" },
-        else 
-                payload = { User.id: @user.id}
-                Seceret = Rails.authenticate.seceret_key_base
-
-                token = JWT.encode payload, seceret
-
-                render json: { token: token }, status: :created
+                render json: { message: "Incorrect username or password" }
             end
     end
 end
 
-private
 
-def user_params
-    params.require(:user)permit :username, :password
-end
-end

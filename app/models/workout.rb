@@ -1,3 +1,3 @@
 class Workout < ApplicationRecord
-    def
+    # belongs_to :user
 end
