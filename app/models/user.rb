@@ -1,17 +1,12 @@
 class User < ApplicationRecord
-  attr_accessor :username, :password
+   validates :username, 
+             presence:true,
+             length: {maximum:200},
+            uniqueness: true
 
- 
-    # validates :email, presence:true,
-    #                   presence: true,
-    #                   length: {maximum:200},
-    #                   uniqueness: true
-
-  
-  has_secure_password
-   
-#   validates :password, presence: true,
-#                        length: {minimum:6}
+    has_secure_password
+end               
 
 
-end
+
+
