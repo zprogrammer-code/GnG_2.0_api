@@ -16,17 +16,27 @@ class UsersController < ApplicationController
         password: params[:password]
     )
     
-    if @user
-        session[:user_id] = @user.id
-        render json: { 
-            status: :created,
-            user: @user }
+
+    if @user.valid?
+        secret = Rails.application.secrets.secret_key_base
+        payload = {user_id: @user.id}
+        token = JWT.encode(payload, seceret)
+        render json: {user: @user, jwt: token}
     else
-        render json: { status: 500 }
-end
+        render json: {errors, user.error.full_messages},
+    end
+
+    
+#     if @user
+#         session[:user_id] = @user.id
+#         render json: { 
+#             status: :created,
+#             user: @user }
+#     else
+#         render json: { status: 500 }
+# end
 
 end
-    # secret = Rails.application.secrets.secret_key_base
     # payload = {user_id: @user.id}
     # token = JWT.encode payload, secret
 

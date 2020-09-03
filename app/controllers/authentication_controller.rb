@@ -13,15 +13,29 @@ class AuthenticationController < ApplicationController
             render json: { 
                 username: @user.username,
                     password: @user.password,
-                     token: token }, status: :created 
-
-             
+                     jwt: token, success: "Welcome back, #{@user.username}" }, status: :created 
             else
                 render json: { error: "No account with that username"}, status: :unauthorized
             end
         else
                 render json: { message: "Incorrect username or password" }
             end
+    end
+end
+
+def auto_login
+        if session_user
+        else
+            render json: {errors: " No User Logged In"}
+        end
+    end
+
+    def logged_in?
+        !!session_user
+    end
+
+    def require_login
+        render json: { message: "Please Login"}, status: :unauthorized unless logged_in?
     end
 end
 
