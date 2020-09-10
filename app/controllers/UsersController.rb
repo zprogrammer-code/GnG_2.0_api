@@ -1,6 +1,35 @@
 class UsersController < ApplicationController
-   
-    # before_action: authenticate, only: [:index]
+  
+  
+  # before_action :authenticate, only: [:index, :create]
+  attr_accessor :username, :password  
+  
+  def create 
+  
+      @user = User.create(
+      username: params[:username],
+      password: params[:password]
+  )
+  
+  # render json: @user
+  #     if @user.valid?
+  #         secret = Rails.application.secrets.secret_key_base
+  #         payload = {user_id: @user.id}
+  #         token = JWT.encode(payload, seceret)
+  #         render json: {user: @user, jwt: token}
+  #     else
+  #         render json: { status: 500 }
+  #     end
+  # end
+  end
+
+    def new
+        attr_accessor :username , :password
+        def initialize(attributes = {})
+        @username = attributes[:username]
+        @password = attributes[:password]
+      end
+
 
     def index
             @user = User.all 
@@ -9,36 +38,17 @@ class UsersController < ApplicationController
     end
                 
 
-    def create 
-   
-        @user = User.create(
-        username: params[:username],
-        password: params[:password]
-    ),
-        if @user
-            session[:user_id] = @user.id
-            render json: { 
-                    status: :created,
-                    user: @user }
-            else
-                render json: { status: 500 }
-        end
-        
-    end
 
-#     payload = {user_id: @user.id}
-#     token = JWT.encode payload, secret
-#     if @user.valid?
-#         secret = Rails.application.secrets.secret_key_base
-#         payload = {user_id: @user.id}
-#         token = JWT.encode(payload, seceret)
-#         render json: {user: @user, jwt: token}
+# if @user
+#     session[:user_id] = @user.id
+#     render json: { 
+#           status: :created,
+#             user: @user }
 #     else
-#         render json: {errors, user.error.full_messages}
-#     end
+#         render json: { status: 500 }
 # end
-end
-    
+
+# end
     
     def find
     @user = User.find_by(username: params[:username])
@@ -50,4 +60,5 @@ end
     end
    
 end
-
+end
+end

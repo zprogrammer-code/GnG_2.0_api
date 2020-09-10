@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::API
-    #     protect_from_forgery with: :null_session
-    #   end
-    # ship_before_action :verify_authenticity_token
+
+
     def authenticate
         auth_header = request.headers["Authorization"]
         token = auth_header.split(" ")[1]
@@ -22,31 +21,31 @@ class ApplicationController < ActionController::API
         end
     end
 
-def session_user
-        decoded_hash = decoded_token
-        if !decoded_hash.empty
-            user_id = decoded[0]['user_id']
-            @user = User.find_by(id: user_id)
-        else
-            nil
-        end
-    end
+# def session_user
+#         decoded_hash = decoded_token
+#         if !decoded_hash.empty
+#             user_id = decoded[0]['user_id']
+#             @user = User.find_by(id: user_id)
+#         else
+#             nil
+#         end
+#     end
 
 
-def auth_header
-    request.headers["Authorization"]
-end
+# def auth_header
+#     request.headers["Authorization"]
+# end
 
-def decoded_token
-    if auth_header
-        token = auth_header.split("")[1]
-        begin
-            JWT.decode(token, "my_secret", true, algorithm: "HS256")
-        rescue JWT::DecodeError
-            []
-        end
-    end
-end
+# def decoded_token
+#     if auth_header
+#         token = auth_header.split("")[1]
+#         begin
+#             JWT.decode(token, "my_secret", true, algorithm: "HS256")
+#         rescue JWT::DecodeError
+#             []
+#         end
+#     end
+# end
 
 
             

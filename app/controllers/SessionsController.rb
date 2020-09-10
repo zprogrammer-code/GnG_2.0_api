@@ -2,36 +2,31 @@
 # include CurrentUserConcern
 # def create
 
-# @user = User.find_by(username: session_params[:username])
+# @user = User.find_by(username: params[:username])
 #         .try(:authenticate, params[:password])
-#         login!
-#         render json: {
-#             logged_in: true,
-#             user: @user
-#         }
-#     else
-#         render json: {
-#             status 401,
-#             errors: ["no such user", "verify credentials and try again or signup"]
-#         }
+
+
+#         if @user
+#             session[:user_id] = @user.id
+#             render json: {
+#                 status: :created,
+#                 logged_in: true,
+#                 user: @user
+#                 }
+#             else
+    
+#             render json: {
+#                  status: 401,
+#                  errors: ["no such user", "verify credentials and try again or signup"]
+#             }
+#         end
 #     end
 # end
 
 
     
 
-# if @user
-#     session[:user_id] = user.id
-#     render json: {
-#         status: :created,
-#         logged_in: true,
-#         user: @user
-#         }
-#     else
-#         render json: { status: 401 }
-#     end
-#  end
-# end
+
 
 # def logged_in
 #     if @current_user
