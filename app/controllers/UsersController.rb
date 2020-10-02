@@ -1,28 +1,33 @@
 class UsersController < ApplicationController
   
   
-  # before_action :authenticate, only: [:index, :create]
+  before_action :authenticate, only: [:index, :create]
   attr_accessor :username, :password  
+  
   
   def create 
   
-      @user = User.create(
+    @user = User.create(
       username: params[:username],
       password: params[:password]
-  )
+      )
+      
+      
+      secret = Rails.application.secrets.secret_key_base
+      payload = {user_id: @user.id}
+      token = JWT.encode(payload, seceret)
+      render json: {user: @user, jwt: token}
   
-  # render json: @user
-  #     if @user.valid?
-  #         secret = Rails.application.secrets.secret_key_base
-  #         payload = {user_id: @user.id}
-  #         token = JWT.encode(payload, seceret)
-  #         render json: {user: @user, jwt: token}
-  #     else
-  #         render json: { status: 500 }
-  #     end
-  # end
+    end
   end
 
+    def index
+            @user = User.all 
+            
+            render json: @user
+    end
+  
+  
     def new
         attr_accessor :username , :password
         def initialize(attributes = {})
@@ -31,11 +36,6 @@ class UsersController < ApplicationController
       end
 
 
-    def index
-            @user = User.all 
-            
-            render json: @user
-    end
                 
 
 
@@ -61,4 +61,4 @@ class UsersController < ApplicationController
    
 end
 end
-end
+

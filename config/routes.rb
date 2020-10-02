@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   
   post "login", to: "authentication#login"
   post "signup", to: "authentication#signup"
+  post "users", to: "users#create"
 
     post "/login", to: "auth#login"
     get "/auto_login", to: "auth#auto_login"
